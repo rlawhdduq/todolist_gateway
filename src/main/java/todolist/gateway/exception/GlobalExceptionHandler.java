@@ -32,7 +32,7 @@ import jakarta.servlet.ServletException;
 public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
+ 
     private void logPrinter(String logType, Exception ex)
     {
         log.info(logType);
