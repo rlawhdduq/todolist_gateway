@@ -44,9 +44,20 @@ public class GatewayServiceImpl implements GatewayService{
     private String notificationUrl;
 
     @Override
-    public String get(String data, String callUrl, String callMethod)
+    public String processCall(String data, String callUrl, String callMethod)
     {
-        log.info("get");
+        String resBody = null;
+        if(callMethod.equalsIgnoreCase("get")) resBody = get(data ,callUrl, callMethod);
+        else if(callMethod.equalsIgnoreCase("post")) resBody = post(data, callUrl, callMethod);
+        else if(callMethod.equalsIgnoreCase("put")) resBody = put(data, callUrl, callMethod);
+        else if(callMethod.equalsIgnoreCase("delete")) resBody = delete(data, callUrl, callMethod);
+
+        return resBody;
+    }
+    // @Override
+    private String get(String data, String callUrl, String callMethod)
+    {
+        // log.info("get");
         callUrl = urlForwarding(callUrl);
         callUrl = pathvariableForwarding(data, callUrl);
         
@@ -54,13 +65,13 @@ public class GatewayServiceImpl implements GatewayService{
                                  .uri(callUrl)
                                  .retrieve()
                                  .bodyToMono(String.class).block();
-        log.info("get return : " + callRes);
+        // log.info("get return : " + callRes);
         return callRes;
     }
-    @Override
-    public String post(String data, String callUrl, String callMethod)
+    // @Override
+    private String post(String data, String callUrl, String callMethod)
     {
-        log.info("post");
+        // log.info("post");
         callUrl = urlForwarding(callUrl);
         String requestBody = dataParse(data);
 
@@ -73,10 +84,10 @@ public class GatewayServiceImpl implements GatewayService{
         // log.info("post return : " + callRes);
         return callRes;
     }
-    @Override
-    public String put(String data, String callUrl, String callMethod)
+    // @Override
+    private String put(String data, String callUrl, String callMethod)
     {
-        log.info("put");
+        // log.info("put");
         callUrl = urlForwarding(callUrl);
         String requestBody = dataParse(data);
             
@@ -89,10 +100,10 @@ public class GatewayServiceImpl implements GatewayService{
         // log.info("put return :" + callRes);
         return callRes;
     }
-    @Override
-    public String delete(String data, String callUrl, String callMethod)
+    // @Override
+    private String delete(String data, String callUrl, String callMethod)
     {
-        log.info("delete");
+        // log.info("delete");
         callUrl = urlForwarding(callUrl);
         String requestBody = dataParse(data);
 
@@ -136,7 +147,7 @@ public class GatewayServiceImpl implements GatewayService{
     
     private String pathvariableForwarding(String data, String callUrl)
     {
-        log.info("PathVariable 변환 시작");
+        // log.info("PathVariable 변환 시작");
         try
         {
             JsonNode rootNode = objectMapper.readTree(data);

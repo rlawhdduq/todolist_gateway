@@ -1,6 +1,9 @@
 package todolist.gateway.filter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -12,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
@@ -25,6 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
+@CrossOrigin(origins = "http://localhost:8989/api/v1/service")
 public class JwtAuthenticateFilter extends OncePerRequestFilter{
 
     @Value("${jwt.secret.lawSecretKey}")
@@ -43,15 +48,42 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter{
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    throws IOException, ServletException
     {
+        // OPTIONS 요청을 처리
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            // log.info("옵션 하이~");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            response.setHeader("Access-Control-Allow-Headers", "Content-Type, call_url, call_method, token");
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
+        /*
+         * 데이터 찍어보기용 소스
+         TestWrapper wrapperRequest = new TestWrapper(request);
+         StringBuilder requestBody = new StringBuilder();
+         BufferedReader reader = new BufferedReader(new InputStreamReader(wrapperRequest.getInputStream()));
+         String line;
+         while ((line = reader.readLine()) != null) {
+             requestBody.append(line);
+         }
+         reader.close();
+ 
+         log.info("RequestBody = " + requestBody.toString());
+         */
+
         // 토큰 검증은 회원가입, 로그인, 토큰발급을 제외한 모든것에서 진행되어야 한다
-        log.info("토큰검증 시작");
+        // log.info("토큰검증 시작");
         String token = request.getHeader("token");
         String url = request.getHeader("call_url");
         String[] exceptUrl = {"/api/user/join", "/api/user/login", "/api/token"};
+        log.info("callUrl : "+url);
         if( !Arrays.asList(exceptUrl).contains(url) )
         {
-            log.info("토큰검증 진행시작");
+            // log.info("토큰검증 진행시작");
             Claims claims = Jwts.parser()
                                 .verifyWith(secretKey)
                                 .build()
@@ -61,7 +93,7 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter{
                 claims.getExpiration().before(java.util.Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
                 )
             {
-                log.info("토큰만료");
+                // log.info("토큰만료");
                 throw new JwtException("Token has Expired");
             }
                                 

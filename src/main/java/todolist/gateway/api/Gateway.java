@@ -20,44 +20,55 @@ public class Gateway {
 
     private static final Logger log = LoggerFactory.getLogger(Gateway.class);
 
-    @RequestMapping(method=RequestMethod.GET)
-    public String getCall(
-        @RequestBody String data,
-        @RequestHeader("call_url") String callUrl,
-        @RequestHeader("call_method") String callMethod
-                        )  
-    {
-        log.info("get Call");
-        return gateway.get(data, callUrl, callMethod);
-    }
     @RequestMapping(method=RequestMethod.POST)
-    public String postCall(
+    public String processCall(
         @RequestBody String data,
         @RequestHeader("call_url") String callUrl,
         @RequestHeader("call_method") String callMethod
-                        ) 
+                            ) 
     {
-        log.info("post Call");
-        return gateway.post(data, callUrl, callMethod);
+        log.info("process Call");
+        return gateway.processCall(data, callUrl, callMethod);
     }
-    @RequestMapping(method=RequestMethod.PUT)
-    public String putCall(
-        @RequestBody String data,
-        @RequestHeader("call_url") String callUrl,
-        @RequestHeader("call_method") String callMethod
-                        )
-    {
-        log.info("put Call");
-        return gateway.put(data, callUrl, callMethod);
-    }
-    @RequestMapping(method=RequestMethod.DELETE)
-    public String deleteCall(
-        @RequestBody String data,
-        @RequestHeader("call_url") String callUrl,
-        @RequestHeader("call_method") String callMethod
-                            )
-    {
-        log.info("delete Call");
-        return gateway.delete(data, callUrl, callMethod);
-    }
+    
+    // @RequestMapping(method=RequestMethod.GET)
+    // public String getCall(
+    //     @RequestBody String data,
+    //     @RequestHeader("call_url") String callUrl,
+    //     @RequestHeader("call_method") String callMethod
+    //                     )  
+    // {
+    //     log.info("get Call");
+    //     return gateway.get(data, callUrl, callMethod);
+    // }
+    // @RequestMapping(method=RequestMethod.POST)
+    // public String postCall(
+    //     @RequestBody String data,
+    //     @RequestHeader("call_url") String callUrl,
+    //     @RequestHeader("call_method") String callMethod
+    //                     ) 
+    // {
+    //     log.info("post Call");
+    //     return gateway.post(data, callUrl, callMethod);
+    // }
+    // @RequestMapping(method=RequestMethod.PUT)
+    // public String putCall(
+    //     @RequestBody String data,
+    //     @RequestHeader("call_url") String callUrl,
+    //     @RequestHeader("call_method") String callMethod
+    //                     )
+    // {
+    //     log.info("put Call");
+    //     return gateway.put(data, callUrl, callMethod);
+    // }
+    // @RequestMapping(method=RequestMethod.DELETE)
+    // public String deleteCall(
+    //     @RequestBody String data,
+    //     @RequestHeader("call_url") String callUrl,
+    //     @RequestHeader("call_method") String callMethod
+    //                         )
+    // {
+    //     log.info("delete Call");
+    //     return gateway.delete(data, callUrl, callMethod);
+    // }
 }
