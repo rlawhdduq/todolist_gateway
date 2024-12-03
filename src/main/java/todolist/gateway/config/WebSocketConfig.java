@@ -1,15 +1,21 @@
 package todolist.gateway.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
     
+    // 헷갈리지 말자... 이건 클라이언트와의 websocket용 설정이다..
+
+    private static final Logger log = LoggerFactory.getLogger(WebSocketConfig.class);
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config)
     {
@@ -19,12 +25,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
          * enableSimplBroker에 /board경로를 추가해주면 된다.
          */
         config.enableSimpleBroker("/board"); // 브로커 설정
-        config.setApplicationDestinationPrefixes("/app"); // 클라이언트가 메시지를 보낼 prefix -> 클라이언트의 요청용 url이라고 보면 된다.
+        // config.setApplicationDestinationPrefixes("/app"); // 클라이언트가 메시지를 보낼 prefix -> 클라이언트의 요청용 url이라고 보면 된다.
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry)
     {
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("http://localhost:8989").withSockJS();
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("http://localhost:8989");
     }
 }

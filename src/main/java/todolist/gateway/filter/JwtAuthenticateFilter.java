@@ -1,9 +1,6 @@
 package todolist.gateway.filter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -13,7 +10,6 @@ import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -61,6 +57,14 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter{
             return;
         }
 
+        // WebSocket 요청을 처리
+        if(request.getRequestURI().startsWith("/ws"))
+        {
+            log.info("웹소켓 요청 :" + request.getRequestURI());
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         /*
          * 데이터 찍어보기용 소스
          TestWrapper wrapperRequest = new TestWrapper(request);
@@ -79,7 +83,7 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter{
         // log.info("토큰검증 시작");
         String token = request.getHeader("token");
         String url = request.getHeader("call_url");
-        String[] exceptUrl = {"/api/user/join", "/api/user/login", "/api/token"};
+        String[] exceptUrl = {"/api/user/join", "/api/user/login", "/api/token", "/ws"};
         log.info("callUrl : "+url);
         if( !Arrays.asList(exceptUrl).contains(url) )
         {

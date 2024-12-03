@@ -15,5 +15,11 @@ public class CrossOriginConfig implements WebMvcConfigurer{
                 .allowedMethods("POST", "GET", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Content-Type", "call_url", "call_method", "token")
                 .allowCredentials(true);
+
+        registry.addMapping("/ws")
+                .allowedOriginPatterns("http://localhost:8989")
+                .allowedMethods("POST", "GET", "OPTIONS")
+                .allowedHeaders("Content-Type", "call_url", "call_method", "token")
+                .allowCredentials(true);
     }
 }
