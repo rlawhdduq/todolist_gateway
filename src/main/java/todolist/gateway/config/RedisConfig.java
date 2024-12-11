@@ -1,9 +1,11 @@
 package todolist.gateway.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -15,10 +17,23 @@ import todolist.gateway.component.RedisMessageListener;
 
 @Configuration
 public class RedisConfig {
-    @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
+    // @Autowired
+    // private RedisConnectionFactory redisConnectionFactory;
+
+    @Value("${spring.redis.data.host}")
+    private String redisHost;
+    @Value("${spring.redis.data.port}")
+    private int redisPort;
+
     @Autowired
     private RedisMessageListener redisMessageListener;
+
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory()
+    {
+        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisHost, redisPort);
+        return lettuceConnectionFactory;
+    }
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory)
@@ -34,7 +49,7 @@ public class RedisConfig {
     public RedisMessageListenerContainer container()
     {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(redisConnectionFactory);
+        container.setConnectionFactory(redisConnectionFactory());
         container.addMessageListener(new MessageListenerAdapter(redisMessageListener), new PatternTopic("board/all"));
         container.addMessageListener(new MessageListenerAdapter(redisMessageListener), new PatternTopic("board/friends:*"));
         container.addMessageListener(new MessageListenerAdapter(redisMessageListener), new PatternTopic("board/community:*"));
