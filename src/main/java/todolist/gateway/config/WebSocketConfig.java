@@ -2,6 +2,7 @@ package todolist.gateway.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -12,7 +13,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
-    
+    @Value("${allow.host.url}")
+    private String allowHostUrl;
+
     // 헷갈리지 말자... 이건 클라이언트와의 websocket용 설정이다..
 
     private static final Logger log = LoggerFactory.getLogger(WebSocketConfig.class);
@@ -31,6 +34,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry)
     {
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("http://localhost:8989");
+        registry.addEndpoint("/ws").setAllowedOriginPatterns(allowHostUrl);
     }
 }
