@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CrossOriginConfig implements WebMvcConfigurer{
 
-    private String allowHostUrl = "http://front:80";
+    private String allowHostUrl = "*";
 
     @Override
     public void addCorsMappings(CorsRegistry registry)
