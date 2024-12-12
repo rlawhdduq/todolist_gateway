@@ -45,9 +45,10 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
     throws IOException, ServletException
     {
+        log.info("Jwt 들어왔어요~~~~~~~~~");
         // OPTIONS 요청을 처리
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            // log.info("옵션 하이~");
+            log.info("옵션 하이~");
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             response.setHeader("Access-Control-Allow-Headers", "Content-Type, call_url, call_method, token");
