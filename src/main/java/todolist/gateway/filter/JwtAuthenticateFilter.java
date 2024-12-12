@@ -25,7 +25,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-@CrossOrigin( origins = "*" )
 public class JwtAuthenticateFilter extends OncePerRequestFilter{
 
     @Value("${jwt.secret.lawSecretKey}")
