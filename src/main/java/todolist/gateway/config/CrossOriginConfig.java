@@ -22,8 +22,8 @@ public class CrossOriginConfig implements WebMvcConfigurer{
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
                 .allowedMethods("POST", "GET", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowedHeaders("*");
+                // .allowCredentials(true);
 
         // registry.addMapping("/ws")
         //         .allowedOriginPatterns("*")
