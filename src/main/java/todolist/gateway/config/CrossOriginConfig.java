@@ -19,7 +19,7 @@ public class CrossOriginConfig implements WebMvcConfigurer{
     {
         log.info("cors origin 들어왔어요~");
         log.info(registry.toString());
-        registry.addMapping("/api/v1/service")
+        registry.addMapping("/**")
                 .allowedOriginPatterns("*")
                 .allowedMethods("POST", "GET", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
