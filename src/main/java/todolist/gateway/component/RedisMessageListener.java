@@ -29,7 +29,7 @@ public class RedisMessageListener implements MessageListener{
         String topic = new String(pattern);
         String payload = new String(message.getBody());
         log.info("topic = " + topic);
-        log.info("payload = " + payload);
+        // log.info("payload = " + payload);
 
         messageTemplate.convertAndSend("/"+topic, new String(payload.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
     }

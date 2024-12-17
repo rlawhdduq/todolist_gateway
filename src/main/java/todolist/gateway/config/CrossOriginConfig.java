@@ -17,7 +17,6 @@ public class CrossOriginConfig implements WebMvcConfigurer{
     @Override
     public void addCorsMappings(CorsRegistry registry)
     {
-        log.info("cors origin 들어왔어요~");
         log.info(registry.toString());
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
