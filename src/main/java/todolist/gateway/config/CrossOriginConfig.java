@@ -18,8 +18,8 @@ public class CrossOriginConfig implements WebMvcConfigurer{
     public void addCorsMappings(CorsRegistry registry)
     {
         log.info(registry.toString());
-        registry.addMapping("/**")
-                .allowedOriginPatterns("*")
+        registry.addMapping("/api/v1/service")
+                .allowedOriginPatterns(allowHostUrl)
                 .allowedMethods("POST", "GET", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
                 // .allowCredentials(true);
