@@ -41,7 +41,7 @@ jobs:
           port: 2222
           script: |
                   # 이건 ssh연결 된 상태에서 실행되는거라 추후에 dockerfile build나 이런거 할 때 여기에 명령어 작성하면 될듯 아래 명령어들은 다 쓰레기임
-                  echo "CD start"
+                  echo "CD start" 
                   cd /spring/docker/compose
                   docker-compose -f docker-compose-gateway.yaml down -v
                   docker-compose -f docker-compose-gateway.yaml up -d --build
