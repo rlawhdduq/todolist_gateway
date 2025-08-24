@@ -28,7 +28,7 @@ public class Gateway {
 
     private static final Logger log = LoggerFactory.getLogger(Gateway.class);
 
-    @RequestMapping(method=RequestMethod.POST)
+    @RequestMapping(value="/", method=RequestMethod.POST)
     public String processCall(
         @RequestBody String data,
         @RequestHeader("call_url") String callUrl,
