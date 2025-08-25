@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @RestController
-// @RequestMapping("/api/v1/service")
+@RequestMapping("/api/v1/service")
 public class Gateway {
     @Autowired
     private GatewayService gateway;
 
     private static final Logger log = LoggerFactory.getLogger(Gateway.class);
 
-    @RequestMapping(value="/" ,method=RequestMethod.POST)
+    @RequestMapping(method=RequestMethod.POST)
     public String processCall(
         @RequestBody String data,
         @RequestHeader("call_url") String callUrl,
