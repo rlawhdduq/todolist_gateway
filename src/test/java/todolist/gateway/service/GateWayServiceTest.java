@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import todolist.gateway.service.impl.GatewayServiceImpl;
+import todolist.gateway.service.mq.impl.GatewayServiceImpl;
 
 @SpringBootTest
 @AutoConfigureMockMvc

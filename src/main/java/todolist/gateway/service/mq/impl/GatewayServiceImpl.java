@@ -1,4 +1,4 @@
-package todolist.gateway.service.impl;
+package todolist.gateway.service.mq.impl;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import todolist.gateway.exception.UrlNotFoundException;
-import todolist.gateway.service.GatewayService;
+import todolist.gateway.service.mq.GatewayService;
 
 @Service
 public class GatewayServiceImpl implements GatewayService{
@@ -54,8 +54,8 @@ public class GatewayServiceImpl implements GatewayService{
 
         return resBody;
     }
-    // @Override
-    private String get(String data, String callUrl, String callMethod)
+    @Override
+    public String get(String data, String callUrl, String callMethod)
     {
         // log.info("get");
         callUrl = urlForwarding(callUrl);
@@ -68,8 +68,8 @@ public class GatewayServiceImpl implements GatewayService{
         // log.info("get return : " + callRes);
         return callRes;
     }
-    // @Override
-    private String post(String data, String callUrl, String callMethod)
+    @Override
+    public String post(String data, String callUrl, String callMethod)
     {
         // log.info("post");
         callUrl = urlForwarding(callUrl);
@@ -84,8 +84,8 @@ public class GatewayServiceImpl implements GatewayService{
         // log.info("post return : " + callRes);
         return callRes;
     }
-    // @Override
-    private String put(String data, String callUrl, String callMethod)
+    @Override
+    public String put(String data, String callUrl, String callMethod)
     {
         // log.info("put");
         callUrl = urlForwarding(callUrl);
@@ -100,8 +100,8 @@ public class GatewayServiceImpl implements GatewayService{
         // log.info("put return :" + callRes);
         return callRes;
     }
-    // @Override
-    private String delete(String data, String callUrl, String callMethod)
+    @Override
+    public String delete(String data, String callUrl, String callMethod)
     {
         // log.info("delete");
         callUrl = urlForwarding(callUrl);

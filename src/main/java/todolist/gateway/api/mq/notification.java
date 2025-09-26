@@ -1,9 +1,9 @@
-package todolist.gateway.api;
+package todolist.gateway.api.mq;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import todolist.gateway.dto.BoardDto;
-import todolist.gateway.service.GatewayService;
+import todolist.gateway.service.mq.GatewayService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/v1/service")
-public class Gateway {
+public class notification {
     @Autowired
     private GatewayService gateway;
 
-    private static final Logger log = LoggerFactory.getLogger(Gateway.class);
+    private static final Logger log = LoggerFactory.getLogger(notification.class);
 
     @RequestMapping(method=RequestMethod.POST)
     public String processCall(
