@@ -1,9 +1,9 @@
-package todolist.gateway.api.v2;
+package todolist.gateway.api.mq;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import todolist.gateway.dto.BoardDto;
-import todolist.gateway.service.GatewayService;
+import todolist.gateway.service.mq.GatewayService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

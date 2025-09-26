@@ -1,4 +1,4 @@
-package todolist.gateway.service.impl;
+package todolist.gateway.service.rest.impl;
 
 import java.util.Map;
 
@@ -8,35 +8,43 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import todolist.gateway.service.GatewayServiceVerTwo;
+import todolist.gateway.service.rest.GatewayService;
 
 @Service
-public class GatewayServiceVerTwoImpl implements GatewayServiceVerTwo{
+public class GatewayServiceImpl implements GatewayService{
 
     @Autowired
     private WebClient webClient;
     ObjectMapper objectMapper = new ObjectMapper();
+
+    @Value("${user.url}")
+    private String userUrl;
+    @Value("${auth.url}")
+    private String authUrl;
     @Value("${board.url}")
     private String boardUrl;
+    @Value("${follow.url}")
+    private String followUrl;
 
     @Override
-    public String get(Long boardId)
+    public String get(Long primaryKey, String api, String extUrl)
     {
+        String callUrl = callUrl(api);
         String callRes = webClient.get()
-                                 .uri(uriBuilder -> uriBuilder.path(boardUrl + "/{boardId}").build(boardId))
+                                 .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
                                  .retrieve()
                                  .bodyToMono(String.class).block();
         return callRes;
     }
 
     @Override
-    public String post(Map<String, Object> data)
+    public String post(Map<String, Object> data, String api, String extUrl)
     {
+        String callUrl = callUrl(api);
         String callRes = webClient.post()
-                                .uri(boardUrl)
+                                .uri(callUrl+extUrl)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .bodyValue(data)
                                 .retrieve()
@@ -45,10 +53,11 @@ public class GatewayServiceVerTwoImpl implements GatewayServiceVerTwo{
     }
     
     @Override
-    public String put(Map<String, Object> data)
+    public String put(Map<String, Object> data, String api, String extUrl)
     {
+        String callUrl = callUrl(api);
         String callRes = webClient.put()
-                                .uri(boardUrl)
+                                .uri(callUrl+extUrl)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .bodyValue(data)
                                 .retrieve()
@@ -57,12 +66,30 @@ public class GatewayServiceVerTwoImpl implements GatewayServiceVerTwo{
     }
 
     @Override
-    public String delete(Long boardId)
+    public String delete(Long primaryKey, String api, String extUrl)
     {
+        String callUrl = callUrl(api);
         String callRes = webClient.delete()
-                                .uri(uriBuilder -> uriBuilder.path(boardUrl + "/{boardId}").build(boardId))
+                                .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
                                 .retrieve()
                                 .bodyToMono(String.class).block();
         return callRes;
+    }
+
+    private String callUrl(String api)
+    {
+        String callUrl = "";
+        switch(api){
+            case "board": 
+                callUrl = boardUrl; break;
+            case "user" : 
+                callUrl = userUrl; break;
+            case "auth" : 
+                callUrl = authUrl; break;
+            case "follow":
+                callUrl = followUrl; break;
+            default:
+        }       
+        return callUrl+="/rest";
     }
 }

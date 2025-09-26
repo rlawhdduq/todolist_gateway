@@ -1,9 +1,9 @@
-package todolist.gateway.api.v2;
+package todolist.gateway.api.rest;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import todolist.gateway.dto.BoardDto;
-import todolist.gateway.service.GatewayService;
+import todolist.gateway.service.rest.GatewayService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -22,23 +22,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/v1/service")
-public class follow {
+public class message {
     @Autowired
     private GatewayService gateway;
 
-    private static final Logger log = LoggerFactory.getLogger(follow.class);
-
-    @RequestMapping(method=RequestMethod.POST)
-    public String processCall(
-        @RequestBody String data,
-        @RequestHeader("call_url") String callUrl,
-        @RequestHeader("call_method") String callMethod
-                            ) 
-    {
-        log.info("process Call");
-        return gateway.processCall(data, callUrl, callMethod);
-    }
-    
+    private static final Logger log = LoggerFactory.getLogger(message.class);
+ 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 

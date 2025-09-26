@@ -1,9 +1,9 @@
-package todolist.gateway.api.v2;
+package todolist.gateway.api.rest;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import todolist.gateway.dto.BoardDto;
-import todolist.gateway.service.GatewayService;
+import todolist.gateway.service.rest.GatewayService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,30 +15,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @RestController
-@RequestMapping("/api/v1/service")
-public class message {
+@RequestMapping("/api/v1/auth")
+public class authinformation {
     @Autowired
     private GatewayService gateway;
 
-    private static final Logger log = LoggerFactory.getLogger(message.class);
-
-    @RequestMapping(method=RequestMethod.POST)
-    public String processCall(
-        @RequestBody String data,
-        @RequestHeader("call_url") String callUrl,
-        @RequestHeader("call_method") String callMethod
-                            ) 
-    {
-        log.info("process Call");
-        return gateway.processCall(data, callUrl, callMethod);
-    }
+    private static final Logger log = LoggerFactory.getLogger(authinformation.class);
     
+    @RequestMapping(method=RequestMethod.POST)
+    public String getToken(@RequestBody Map<String, Object> data) {
+        String res = gateway.post(data, "auth", "/token");
+        return res;
+    }
+
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 

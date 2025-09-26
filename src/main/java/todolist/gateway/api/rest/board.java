@@ -1,10 +1,9 @@
-package todolist.gateway.api.v2;
+package todolist.gateway.api.rest;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import todolist.gateway.dto.BoardDto;
-import todolist.gateway.service.GatewayService;
-import todolist.gateway.service.GatewayServiceVerTwo;
+import todolist.gateway.service.rest.GatewayService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -25,58 +24,58 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("/api/v2/board")
+@RequestMapping("/api/v1/board")
 public class board {
     @Autowired
-    private GatewayServiceVerTwo gateway;
+    private GatewayService gateway;
 
     private static final Logger log = LoggerFactory.getLogger(board.class);
 
-    @RequestMapping(method=RequestMethod.POST)
-    public String boardPostCall(@RequestBody Map<String, Object> data) 
-    {
-        log.info("boardPostCall");
-        String res = gateway.post(data);
-        return res;
-    }
-
-    @RequestMapping(method=RequestMethod.PUT)
-    public String boardPutCall(@RequestParam Map<String, Object> data) 
-    {
-        log.info("boardPutCall");
-        String res = gateway.put(data);
-        return res;
-    }
-
     @RequestMapping(path="/{boardId}", method=RequestMethod.GET)
-    public String boardGetCall(@PathVariable Long boardId) 
+    public String getBoard(@PathVariable Long boardId) 
     {
         log.info("boardGetCall");
-        String res = gateway.get(boardId);
-        return res;
-    }
-
-    @RequestMapping(path="/{boardId}", method=RequestMethod.DELETE)
-    public String boardDeleteCall(@PathVariable Long boardId) 
-    {
-        log.info("boardDeleteCall");
-        String res = gateway.delete(boardId);
+        String res = gateway.get(boardId, "board", "");
         return res;
     }
 
     @RequestMapping(path="/detail/{boardId}", method=RequestMethod.GET)
-    public String boardDetailGetCall(@PathVariable Long boardId) 
+    public String getDetailBoard(@PathVariable Long boardId) 
     {
         log.info("boardDetailGetCall");
-        String res = gateway.get(boardId);
+        String res = gateway.get(boardId, "board", "/detail");
+        return res;
+    }
+
+    @RequestMapping(method=RequestMethod.POST)
+    public String insertBoard(@RequestBody Map<String, Object> data) 
+    {
+        log.info("boardPostCall");
+        String res = gateway.post(data, "board", "");
+        return res;
+    }
+
+    @RequestMapping(method=RequestMethod.PUT)
+    public String updateBoard(@RequestParam Map<String, Object> data) 
+    {
+        log.info("boardPutCall");
+        String res = gateway.put(data, "board", "");
+        return res;
+    }
+
+    @RequestMapping(path="/{boardId}", method=RequestMethod.DELETE)
+    public String deleteBoard(@PathVariable Long boardId) 
+    {
+        log.info("boardDeleteCall");
+        String res = gateway.delete(boardId, "board", "");
         return res;
     }
 
     @RequestMapping(path="/detail/{boardId}", method=RequestMethod.DELETE)
-    public String boardDetailDeleteGetCall(@PathVariable Long boardId) 
+    public String deleteDetailBoard(@PathVariable Long boardId) 
     {
         log.info("boardDetailDeleteGetCall");
-        String res = gateway.delete(boardId);
+        String res = gateway.delete(boardId, "board", "/detail");
         return res;
     }
     
