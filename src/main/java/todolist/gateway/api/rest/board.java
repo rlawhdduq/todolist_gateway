@@ -26,11 +26,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/api/v1/board")
 public class board {
-    @Autowired
-    private GatewayService gateway;
 
     private static final Logger log = LoggerFactory.getLogger(board.class);
+    @Autowired
+    private GatewayService gateway;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
+    @RequestMapping(value="/noti", method=RequestMethod.POST)
+    public ResponseEntity<String> notiBoard(@RequestBody BoardDto boardDto) {
+        Map<String, String> scope = new HashMap<String, String>(){{
+            put("A", "all");
+            put("F", "friends:");
+            put("C", "community:");
+        }};
+        String topic = scope.get(boardDto.getScope_of_disclosure());
+        if( !boardDto.getScope_of_disclosure().equals("A") )
+        {
+            topic += boardDto.getUser_id();
+        }
+        messagingTemplate.convertAndSend("board/"+topic, boardDto);
+        return ResponseEntity.ok("["+LocalDateTime.now()+"]Notification sent to WebSocket clients");
+    }
+
+    // Board
     @RequestMapping(path="/{boardId}", method=RequestMethod.GET)
     public String getBoard(@PathVariable Long boardId) 
     {
@@ -74,28 +93,82 @@ public class board {
     @RequestMapping(path="/detail/{boardId}", method=RequestMethod.DELETE)
     public String deleteDetailBoard(@PathVariable Long boardId) 
     {
-        log.info("boardDetailDeleteGetCall");
+        log.info("boardDetailDeleteCall");
         String res = gateway.delete(boardId, "board", "/detail");
         return res;
     }
     
-    
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    // Reply
+    @RequestMapping(path="/reply/{boardId}", method=RequestMethod.GET)
+    public String getReply(@PathVariable Long boardId) 
+    {
+        log.info("replyGetCall");
+        String res = gateway.get(boardId, "board", "/reply");
+        return res;
+    }
+    @RequestMapping(path="/reply", method=RequestMethod.POST)
+    public String insertReply(@RequestBody Map<String, Object> data) 
+    {
+        log.info("replyPostCall");
+        String res = gateway.post(data, "board", "/reply");
+        return res;
+    }
+    @RequestMapping(path="/reply", method=RequestMethod.PUT)
+    public String updateReply(@RequestParam Map<String, Object> data) 
+    {
+        log.info("replyPutCall");
+        String res = gateway.put(data, "board", "/reply");
+        return res;
+    }
+    @RequestMapping(path="/reply/{boardId}", method=RequestMethod.DELETE)
+    public String deleteReply(@PathVariable Long boardId) 
+    {
+        log.info("replyDeleteCall");
+        String res = gateway.delete(boardId, "board", "/reply");
+        return res;
+    }
+    @RequestMapping(path="/reply/detail/{boardId}", method=RequestMethod.DELETE)
+    public String detailDeleteReply(@PathVariable Long boardId) 
+    {
+        log.info("replyDetailDeleteCall");
+        String res = gateway.delete(boardId, "board", "/reply/detail");
+        return res;
+    }
 
-    @RequestMapping(value="/noti", method=RequestMethod.POST)
-    public ResponseEntity<String> notiBoard(@RequestBody BoardDto boardDto) {
-        Map<String, String> scope = new HashMap<String, String>(){{
-            put("A", "all");
-            put("F", "friends:");
-            put("C", "community:");
-        }};
-        String topic = scope.get(boardDto.getScope_of_disclosure());
-        if( !boardDto.getScope_of_disclosure().equals("A") )
-        {
-            topic += boardDto.getUser_id();
-        }
-        messagingTemplate.convertAndSend("board/"+topic, boardDto);
-        return ResponseEntity.ok("["+LocalDateTime.now()+"]Notification sent to WebSocket clients");
+    // Todolist
+    @RequestMapping(path="/todo/{boardId}", method=RequestMethod.GET)
+    public String getTodo(@PathVariable Long boardId) 
+    {
+        log.info("boardGetCall");
+        String res = gateway.get(boardId, "board", "/todo");
+        return res;
+    }
+    @RequestMapping(path="/todo", method=RequestMethod.POST)
+    public String insertTodo(@RequestBody Map<String, Object> data) 
+    {
+        log.info("todoPostCall");
+        String res = gateway.post(data, "board", "/todo");
+        return res;
+    }
+    @RequestMapping(path="/todo", method=RequestMethod.PUT)
+    public String updateTodo(@RequestParam Map<String, Object> data) 
+    {
+        log.info("todoPutCall");
+        String res = gateway.put(data, "board", "/todo");
+        return res;
+    }
+    @RequestMapping(path="/todo/{boardId}", method=RequestMethod.DELETE)
+    public String deleteTodo(@PathVariable Long boardId) 
+    {
+        log.info("todoDeleteCall");
+        String res = gateway.delete(boardId, "board", "/todo");
+        return res;
+    }
+    @RequestMapping(path="/todo/detail/{boardId}", method=RequestMethod.DELETE)
+    public String detailDeleteTodo(@PathVariable Long boardId) 
+    {
+        log.info("todoDetailDeleteCall");
+        String res = gateway.delete(boardId, "board", "/todo/detail");
+        return res;
     }
 }
