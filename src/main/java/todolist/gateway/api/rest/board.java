@@ -50,11 +50,11 @@ public class board {
     }
 
     // Board
-    @RequestMapping(path="/{boardId}", method=RequestMethod.GET)
-    public String getBoard(@PathVariable Long boardId) 
+    @RequestMapping(method=RequestMethod.GET)
+    public String getBoard(@RequestParam Map<String, Object> data) 
     {
         log.info("boardGetCall");
-        String res = gateway.get(boardId, "board", "");
+        String res = gateway.getObject(data, "board", "");
         return res;
     }
 

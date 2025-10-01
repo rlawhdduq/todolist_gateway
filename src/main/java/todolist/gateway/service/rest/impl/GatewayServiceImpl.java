@@ -1,11 +1,14 @@
 package todolist.gateway.service.rest.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +37,25 @@ public class GatewayServiceImpl implements GatewayService{
         String callUrl = callUrl(api);
         String callRes = webClient.get()
                                  .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                                 .retrieve()
+                                 .bodyToMono(String.class).block();
+        return callRes;
+    }
+
+    @Override
+    public String getObject(Map<String, Object> data, String api, String extUrl)
+    {
+        String callUrl = callUrl(api);
+        MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
+        mData.setAll(data);
+
+        String callRes = webClient.get()
+                                 .uri(uriBuilder -> {
+                                                        uriBuilder.path(callUrl+extUrl);
+                                                        // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
+                                                        mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
+                                                        return uriBuilder.build();
+                                                    })
                                  .retrieve()
                                  .bodyToMono(String.class).block();
         return callRes;

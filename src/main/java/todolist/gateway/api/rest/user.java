@@ -37,7 +37,7 @@ public class user {
         return res;
     }
 
-    @RequestMapping(method=RequestMethod.POST)
+    @RequestMapping(path="/login", method=RequestMethod.POST)
     public String loginUser(@RequestBody Map<String, Object> data) {
         String res = gateway.post(data, "user", "/login");
         return res;
