@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @RestController
-@RequestMapping("/api/v1/service")
+@RequestMapping("/api/v2/noti")
 public class NotificationMq {
     @Autowired
     private GatewayService gateway;

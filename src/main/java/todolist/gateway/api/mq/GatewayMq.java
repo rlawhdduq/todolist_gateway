@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @RestController
-@RequestMapping("/api/v1/service")
+@RequestMapping("/api/v2/service")
 public class GatewayMq {
     @Autowired
     private GatewayService gateway;
