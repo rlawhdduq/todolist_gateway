@@ -21,18 +21,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @RestController
-@RequestMapping("/api/v2/auth")
-public class authinformation {
+@RequestMapping("/api/v1/service")
+public class MessageMq {
     @Autowired
     private GatewayService gateway;
 
-    private static final Logger log = LoggerFactory.getLogger(authinformation.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageMq.class);
 
     @RequestMapping(method=RequestMethod.POST)
-    public String processCall(@RequestBody String data) 
+    public String processCall(
+        @RequestBody String data,
+        @RequestHeader("call_url") String callUrl,
+        @RequestHeader("call_method") String callMethod
+                            ) 
     {
         log.info("process Call");
-        return "";
+        return gateway.processCall(data, callUrl, callMethod);
     }
     
     @Autowired

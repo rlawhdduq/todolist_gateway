@@ -19,33 +19,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 
 @RestController
-@RequestMapping("/api/v1/user")
-public class user {
-
+@RequestMapping("/api/v1/follow")
+public class FollowRest {
     @Autowired
     private GatewayService gateway;
-    private static final Logger log = LoggerFactory.getLogger(user.class);
 
-    @RequestMapping(method=RequestMethod.POST)
-    public String insertUser(@RequestBody Map<String, Object> data) {
-        String res = gateway.post(data, "user", "");
-        return res;
-    }
-
-    @RequestMapping(path="/login", method=RequestMethod.POST)
-    public String loginUser(@RequestBody Map<String, Object> data) {
-        String res = gateway.post(data, "user", "/login");
-        return res;
-    }
+    private static final Logger log = LoggerFactory.getLogger(FollowRest.class);
 
     @RequestMapping(path="/{userId}", method=RequestMethod.GET)
-    public String getUser(@PathVariable Long userId) {
-        String res = gateway.get(userId, "user", "");
+    public String getFollow(@PathVariable Long userId) {
+        String res = gateway.get(userId, "follow", "");
+        return res;
+    }
+
+    @RequestMapping(method=RequestMethod.POST)
+    public String insertFollow(@RequestBody Map<String, Object> data) {
+        String res = gateway.post(data, "follow", "");
+        return res;
+    }
+
+    // 얘는 친구 삭제니까 값을 두개 받아야함... 나와 삭제 할 친구의 PK
+    @RequestMapping(path="/{userId}", method=RequestMethod.GET)
+    public String deleteFollow(@RequestBody Map<String, Object> data) {
+        String res = gateway.post(data, "follow", "");
         return res;
     }
 }

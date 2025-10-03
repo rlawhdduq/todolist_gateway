@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import todolist.gateway.exception.UrlNotFoundException;
 import todolist.gateway.service.mq.GatewayService;
 
-@Service
+@Service("MqGatewayService")
 public class GatewayServiceImpl implements GatewayService{
 
     @Autowired

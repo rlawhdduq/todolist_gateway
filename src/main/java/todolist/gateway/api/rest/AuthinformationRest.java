@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class authinformation {
+public class AuthinformationRest {
     @Autowired
     private GatewayService gateway;
 
-    private static final Logger log = LoggerFactory.getLogger(authinformation.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthinformationRest.class);
     
     @RequestMapping(method=RequestMethod.POST)
     public String getToken(@RequestBody Map<String, Object> data) {

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import todolist.gateway.service.rest.GatewayService;
 
-@Service
+@Service("RestGatewayService")
 public class GatewayServiceImpl implements GatewayService{
 
     @Autowired

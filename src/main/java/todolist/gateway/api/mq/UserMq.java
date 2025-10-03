@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/v1/service")
-public class user {
+public class UserMq {
     @Autowired
     private GatewayService gateway;
 
-    private static final Logger log = LoggerFactory.getLogger(user.class);
+    private static final Logger log = LoggerFactory.getLogger(UserMq.class);
 
     @RequestMapping(method=RequestMethod.POST)
     public String processCall(

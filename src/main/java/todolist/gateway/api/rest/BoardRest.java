@@ -25,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1/board")
-public class board {
+public class BoardRest {
 
-    private static final Logger log = LoggerFactory.getLogger(board.class);
+    private static final Logger log = LoggerFactory.getLogger(BoardRest.class);
     @Autowired
     private GatewayService gateway;
     @Autowired

@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/v1/service")
-public class message {
+public class MessageRest {
     @Autowired
     private GatewayService gateway;
 
-    private static final Logger log = LoggerFactory.getLogger(message.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageRest.class);
  
     @Autowired
     private SimpMessagingTemplate messagingTemplate;

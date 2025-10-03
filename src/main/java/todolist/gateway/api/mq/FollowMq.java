@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/v2/follow")
-public class follow {
+public class FollowMq {
     @Autowired
     private GatewayService gateway;
 
-    private static final Logger log = LoggerFactory.getLogger(follow.class);
+    private static final Logger log = LoggerFactory.getLogger(FollowMq.class);
 
 }
