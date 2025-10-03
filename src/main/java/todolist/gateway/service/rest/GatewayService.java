@@ -8,4 +8,5 @@ public interface GatewayService {
     String post(Map<String, Object> data, String api, String extUrl);
     String put(Map<String, Object> data, String api, String extUrl);
     String delete(Long primaryKey, String api, String extUrl);
+    String deleteObject(Map<String, Object> data, String api, String extUrl);
 }

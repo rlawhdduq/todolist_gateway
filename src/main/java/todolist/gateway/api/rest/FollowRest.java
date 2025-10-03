@@ -42,9 +42,9 @@ public class FollowRest {
     }
 
     // 얘는 친구 삭제니까 값을 두개 받아야함... 나와 삭제 할 친구의 PK
-    @RequestMapping(path="/{userId}", method=RequestMethod.GET)
+    @RequestMapping(method=RequestMethod.DELETE)
     public String deleteFollow(@RequestBody Map<String, Object> data) {
-        String res = gateway.post(data, "follow", "");
+        String res = gateway.deleteObject(data, "follow", "");
         return res;
     }
 }

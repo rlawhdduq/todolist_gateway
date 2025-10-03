@@ -102,6 +102,25 @@ public class GatewayServiceImpl implements GatewayService{
         return callRes;
     }
 
+    @Override
+    public String deleteObject(Map<String, Object> data, String api, String extUrl)
+    {
+        String callUrl = callUrl(api);
+        MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
+        mData.setAll(data);
+
+        String callRes = webClient.delete()
+                                 .uri(uriBuilder -> {
+                                                        uriBuilder.path(callUrl+extUrl);
+                                                        // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
+                                                        mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
+                                                        return uriBuilder.build();
+                                                    })
+                                 .retrieve()
+                                 .bodyToMono(String.class).block();
+        return callRes;
+    }
+
     private String callUrl(String api)
     {
         String callUrl = "";
