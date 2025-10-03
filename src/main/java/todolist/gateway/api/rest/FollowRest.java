@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -43,7 +44,7 @@ public class FollowRest {
 
     // 얘는 친구 삭제니까 값을 두개 받아야함... 나와 삭제 할 친구의 PK
     @RequestMapping(method=RequestMethod.DELETE)
-    public String deleteFollow(@RequestBody Map<String, Object> data) {
+    public String deleteFollow(@RequestParam Map<String, Object> data) {
         String res = gateway.deleteObject(data, "follow", "");
         return res;
     }

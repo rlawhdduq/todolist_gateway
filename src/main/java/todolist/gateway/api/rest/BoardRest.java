@@ -75,7 +75,7 @@ public class BoardRest {
     }
 
     @RequestMapping(method=RequestMethod.PUT)
-    public String updateBoard(@RequestParam Map<String, Object> data) 
+    public String updateBoard(@RequestBody Map<String, Object> data) 
     {
         log.info("boardPutCall");
         String res = gateway.put(data, "board", "");
@@ -114,7 +114,7 @@ public class BoardRest {
         return res;
     }
     @RequestMapping(path="/reply", method=RequestMethod.PUT)
-    public String updateReply(@RequestParam Map<String, Object> data) 
+    public String updateReply(@RequestBody Map<String, Object> data) 
     {
         log.info("replyPutCall");
         String res = gateway.put(data, "board", "/reply");
@@ -151,7 +151,7 @@ public class BoardRest {
         return res;
     }
     @RequestMapping(path="/todo", method=RequestMethod.PUT)
-    public String updateTodo(@RequestParam Map<String, Object> data) 
+    public String updateTodo(@RequestBody Map<String, Object> data) 
     {
         log.info("todoPutCall");
         String res = gateway.put(data, "board", "/todo");
