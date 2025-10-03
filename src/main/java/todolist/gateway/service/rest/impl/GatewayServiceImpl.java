@@ -24,12 +24,16 @@ public class GatewayServiceImpl implements GatewayService{
 
     @Value("${user.url}")
     private String userUrl;
-    @Value("${auth.url}")
+    @Value("${authinformation.url}")
     private String authUrl;
     @Value("${board.url}")
     private String boardUrl;
     @Value("${follow.url}")
     private String followUrl;
+    @Value("${message.url}")
+    private String messageUrl;
+    @Value("${notification.url}")
+    private String notificationUrl;
 
     @Override
     public String get(Long primaryKey, String api, String extUrl)
