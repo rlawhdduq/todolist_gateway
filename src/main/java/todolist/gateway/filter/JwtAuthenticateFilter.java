@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
@@ -24,6 +25,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Rest용 토큰검증 필터다...
+ * 근데 내용이 좋아서 이거 Mq도 이렇게 써야할듯?
+ */
 @Component
 public class JwtAuthenticateFilter extends OncePerRequestFilter{
 
@@ -80,13 +85,16 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter{
         // 토큰 검증은 회원가입, 로그인, 토큰발급을 제외한 모든것에서 진행되어야 한다
         // log.info("토큰검증 시작");
         String token = request.getHeader("token");
-        String url = request.getHeader("call_url");
-        String[] exceptUrl = {"/api/user/join", "/api/user/login", "/api/token", "/ws"};
+        List<String> exceptUrl = Arrays.asList("/api/user/join", "/api/user/login", "/api/token", "/ws");
+        String requestUrl = request.getRequestURI();
+
         log.info("Acess ["+request.getRemoteHost()+"/"+request.getRemoteAddr()+":"+request.getRemotePort()+"] ");
-        log.info("callUrl : "+url);
-        if( !Arrays.asList(exceptUrl).contains(url) )
+        log.info("callUrl : "+requestUrl);
+
+        boolean isVerificationExcepted = exceptUrl.stream().anyMatch(pattern -> requestUrl.startsWith(pattern));
+        if( !isVerificationExcepted )
         {
-            // log.info("토큰검증 진행시작");
+            log.info("토큰검증 진행시작");
             Claims claims = Jwts.parser()
                                 .verifyWith(secretKey)
                                 .build()
