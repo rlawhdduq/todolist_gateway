@@ -7,16 +7,18 @@ import todolist.gateway.service.rest.GatewayService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,124 +53,156 @@ public class BoardRest {
 
     // Board
     @RequestMapping(method=RequestMethod.GET)
-    public String getBoard(@RequestParam Map<String, Object> data) 
+    public ResponseEntity<List<Map<String, Object>>> getBoard(@RequestParam Map<String, Object> data) 
     {
         log.info("boardGetCall");
-        String res = gateway.getObject(data, "board", "");
-        return res;
+        List<Map<String, Object>> res = gateway.getObject(data, "board", "", List.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
 
     @RequestMapping(path="/detail/{boardId}", method=RequestMethod.GET)
-    public String getDetailBoard(@PathVariable Long boardId) 
+    public ResponseEntity<String> getDetailBoard(@PathVariable Long boardId) 
     {
         log.info("boardDetailGetCall");
-        String res = gateway.get(boardId, "board", "/detail");
-        return res;
+        String res = gateway.get(boardId, "board", "/detail", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    public String insertBoard(@RequestBody Map<String, Object> data) 
+    public ResponseEntity<Long> insertBoard(@RequestBody Map<String, Object> data) 
     {
         log.info("boardPostCall");
-        String res = gateway.post(data, "board", "");
-        return res;
+        Long res = gateway.post(data, "board", "", Long.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
 
     @RequestMapping(method=RequestMethod.PUT)
-    public String updateBoard(@RequestBody Map<String, Object> data) 
+    public ResponseEntity<Long> updateBoard(@RequestBody Map<String, Object> data) 
     {
         log.info("boardPutCall");
-        String res = gateway.put(data, "board", "");
-        return res;
+        Long res = gateway.put(data, "board", "", Long.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
 
     @RequestMapping(path="/{boardId}", method=RequestMethod.DELETE)
-    public String deleteBoard(@PathVariable Long boardId) 
+    public ResponseEntity<String> deleteBoard(@PathVariable Long boardId) 
     {
         log.info("boardDeleteCall");
-        String res = gateway.delete(boardId, "board", "");
-        return res;
+        String res = gateway.delete(boardId, "board", "", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
 
     @RequestMapping(path="/detail/{boardId}", method=RequestMethod.DELETE)
-    public String deleteDetailBoard(@PathVariable Long boardId) 
+    public ResponseEntity<String> deleteDetailBoard(@PathVariable Long boardId) 
     {
         log.info("boardDetailDeleteCall");
-        String res = gateway.delete(boardId, "board", "/detail");
-        return res;
+        String res = gateway.delete(boardId, "board", "/detail", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     
     // Reply
     @RequestMapping(path="/reply/{boardId}", method=RequestMethod.GET)
-    public String getReply(@PathVariable Long boardId) 
+    public ResponseEntity<List<Map<String, Object>>> getReply(@PathVariable Long boardId) 
     {
         log.info("replyGetCall");
-        String res = gateway.get(boardId, "board", "/reply");
-        return res;
+        List<Map<String, Object>> res = gateway.get(boardId, "board", "/reply", List.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     @RequestMapping(path="/reply", method=RequestMethod.POST)
-    public String insertReply(@RequestBody Map<String, Object> data) 
+    public ResponseEntity<String> insertReply(@RequestBody Map<String, Object> data) 
     {
         log.info("replyPostCall");
-        String res = gateway.post(data, "board", "/reply");
-        return res;
+        String res = gateway.post(data, "board", "/reply", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     @RequestMapping(path="/reply", method=RequestMethod.PUT)
-    public String updateReply(@RequestBody Map<String, Object> data) 
+    public ResponseEntity<String> updateReply(@RequestBody Map<String, Object> data) 
     {
         log.info("replyPutCall");
-        String res = gateway.put(data, "board", "/reply");
-        return res;
+        String res = gateway.put(data, "board", "/reply", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     @RequestMapping(path="/reply/{boardId}", method=RequestMethod.DELETE)
-    public String deleteReply(@PathVariable Long boardId) 
+    public ResponseEntity<String> deleteReply(@PathVariable Long boardId) 
     {
         log.info("replyDeleteCall");
-        String res = gateway.delete(boardId, "board", "/reply");
-        return res;
+        String res = gateway.delete(boardId, "board", "/reply", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     @RequestMapping(path="/reply/detail/{boardId}", method=RequestMethod.DELETE)
-    public String detailDeleteReply(@PathVariable Long boardId) 
+    public ResponseEntity<String> detailDeleteReply(@PathVariable Long boardId) 
     {
         log.info("replyDetailDeleteCall");
-        String res = gateway.delete(boardId, "board", "/reply/detail");
-        return res;
+        String res = gateway.delete(boardId, "board", "/reply/detail", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
 
     // Todolist
     @RequestMapping(path="/todo/{boardId}", method=RequestMethod.GET)
-    public String getTodo(@PathVariable Long boardId) 
+    public ResponseEntity<List<Map<String, Object>>> getTodo(@PathVariable Long boardId) 
     {
         log.info("boardGetCall");
-        String res = gateway.get(boardId, "board", "/todo");
-        return res;
+        List<Map<String, Object>> res = gateway.get(boardId, "board", "/todo", List.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     @RequestMapping(path="/todo", method=RequestMethod.POST)
-    public String insertTodo(@RequestBody Map<String, Object> data) 
+    public ResponseEntity<String> insertTodo(@RequestBody Map<String, Object> data) 
     {
         log.info("todoPostCall");
-        String res = gateway.post(data, "board", "/todo");
-        return res;
+        String res = gateway.post(data, "board", "/todo", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     @RequestMapping(path="/todo", method=RequestMethod.PUT)
-    public String updateTodo(@RequestBody Map<String, Object> data) 
+    public ResponseEntity<String> updateTodo(@RequestBody Map<String, Object> data) 
     {
         log.info("todoPutCall");
-        String res = gateway.put(data, "board", "/todo");
-        return res;
+        String res = gateway.put(data, "board", "/todo", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     @RequestMapping(path="/todo/{boardId}", method=RequestMethod.DELETE)
-    public String deleteTodo(@PathVariable Long boardId) 
+    public ResponseEntity<String> deleteTodo(@PathVariable Long boardId) 
     {
         log.info("todoDeleteCall");
-        String res = gateway.delete(boardId, "board", "/todo");
-        return res;
+        String res = gateway.delete(boardId, "board", "/todo", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
     @RequestMapping(path="/todo/detail/{boardId}", method=RequestMethod.DELETE)
-    public String detailDeleteTodo(@PathVariable Long boardId) 
+    public ResponseEntity<String> detailDeleteTodo(@PathVariable Long boardId) 
     {
         log.info("todoDetailDeleteCall");
-        String res = gateway.delete(boardId, "board", "/todo/detail");
-        return res;
+        String res = gateway.delete(boardId, "board", "/todo/detail", String.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
     }
 }

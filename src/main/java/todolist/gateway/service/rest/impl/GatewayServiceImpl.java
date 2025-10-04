@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -36,80 +37,129 @@ public class GatewayServiceImpl implements GatewayService{
     private String notificationUrl;
 
     @Override
-    public String get(Long primaryKey, String api, String extUrl)
+    public <T> T get(Long primaryKey, String api, String extUrl, Class<T> responseType)
     {
         String callUrl = callUrl(api);
-        String callRes = webClient.get()
-                                 .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
-                                 .retrieve()
-                                 .bodyToMono(String.class).block();
-        return callRes;
+        return webClient.get()
+                        .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                        .retrieve()
+                        .bodyToMono(responseType).block();
+    }
+    @Override
+    public <T> T get(Long primaryKey, String api, String extUrl, ParameterizedTypeReference<T> responseType)
+    {
+        String callUrl = callUrl(api);
+        return webClient.get()
+                        .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                        .retrieve()
+                        .bodyToMono(responseType).block();
     }
 
     @Override
-    public String getObject(Map<String, Object> data, String api, String extUrl)
+    public <T> T getObject(Map<String, Object> data, String api, String extUrl, Class<T> responseType)
     {
         String callUrl = callUrl(api);
         MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
         mData.setAll(data);
-
-        String callRes = webClient.get()
-                                 .uri(uriBuilder -> {
-                                                        uriBuilder.path(callUrl+extUrl);
-                                                        // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
-                                                        mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
-                                                        return uriBuilder.build();
-                                                    })
-                                 .retrieve()
-                                 .bodyToMono(String.class).block();
-        return callRes;
+        return webClient.get()
+                        .uri(uriBuilder -> {
+                                            uriBuilder.path(callUrl+extUrl);
+                                            // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
+                                            mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
+                                            return uriBuilder.build();
+                                        })
+                        .retrieve()
+                        .bodyToMono(responseType).block();
+    }
+    @Override
+    public <T> T getObject(Map<String, Object> data, String api, String extUrl, ParameterizedTypeReference<T> responseType)
+    {
+        String callUrl = callUrl(api);
+        MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
+        mData.setAll(data);
+        return webClient.get()
+                        .uri(uriBuilder -> {
+                                            uriBuilder.path(callUrl+extUrl);
+                                            // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
+                                            mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
+                                            return uriBuilder.build();
+                                        })
+                        .retrieve()
+                        .bodyToMono(responseType).block();
     }
 
     @Override
-    public String post(Map<String, Object> data, String api, String extUrl)
+    public <T> T post(Map<String, Object> data, String api, String extUrl, Class<T> responseType)
     {
         String callUrl = callUrl(api);
-        String callRes = webClient.post()
+        return webClient.post()
                                 .uri(callUrl+extUrl)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .bodyValue(data)
                                 .retrieve()
-                                .bodyToMono(String.class).block();
-        return callRes;
+                                .bodyToMono(responseType).block();
+    }
+    @Override
+    public <T> T post(Map<String, Object> data, String api, String extUrl, ParameterizedTypeReference<T> responseType)
+    {
+        String callUrl = callUrl(api);
+        return webClient.post()
+                                .uri(callUrl+extUrl)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(data)
+                                .retrieve()
+                                .bodyToMono(responseType).block();
     }
     
     @Override
-    public String put(Map<String, Object> data, String api, String extUrl)
+    public <T> T put(Map<String, Object> data, String api, String extUrl, Class<T> responseType)
     {
         String callUrl = callUrl(api);
-        String callRes = webClient.put()
+        return webClient.put()
                                 .uri(callUrl+extUrl)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .bodyValue(data)
                                 .retrieve()
-                                .bodyToMono(String.class).block();
-        return callRes;
+                                .bodyToMono(responseType).block();
     }
-
     @Override
-    public String delete(Long primaryKey, String api, String extUrl)
+    public <T> T put(Map<String, Object> data, String api, String extUrl, ParameterizedTypeReference<T> responseType)
     {
         String callUrl = callUrl(api);
-        String callRes = webClient.delete()
-                                .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+        return webClient.put()
+                                .uri(callUrl+extUrl)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(data)
                                 .retrieve()
-                                .bodyToMono(String.class).block();
-        return callRes;
+                                .bodyToMono(responseType).block();
     }
 
     @Override
-    public String deleteObject(Map<String, Object> data, String api, String extUrl)
+    public <T> T delete(Long primaryKey, String api, String extUrl, Class<T> responseType)
+    {
+        String callUrl = callUrl(api);
+        return webClient.delete()
+                                .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                                .retrieve()
+                                .bodyToMono(responseType).block();
+    }
+    @Override
+    public <T> T delete(Long primaryKey, String api, String extUrl, ParameterizedTypeReference<T> responseType)
+    {
+        String callUrl = callUrl(api);
+        return webClient.delete()
+                                .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                                .retrieve()
+                                .bodyToMono(responseType).block();
+    }
+
+    @Override
+    public <T> T deleteObject(Map<String, Object> data, String api, String extUrl, Class<T> responseType)
     {
         String callUrl = callUrl(api);
         MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
         mData.setAll(data);
-
-        String callRes = webClient.delete()
+        return webClient.delete()
                                  .uri(uriBuilder -> {
                                                         uriBuilder.path(callUrl+extUrl);
                                                         // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
@@ -117,8 +167,23 @@ public class GatewayServiceImpl implements GatewayService{
                                                         return uriBuilder.build();
                                                     })
                                  .retrieve()
-                                 .bodyToMono(String.class).block();
-        return callRes;
+                                 .bodyToMono(responseType).block();
+    }
+    @Override
+    public <T> T deleteObject(Map<String, Object> data, String api, String extUrl, ParameterizedTypeReference<T> responseType)
+    {
+        String callUrl = callUrl(api);
+        MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
+        mData.setAll(data);
+        return webClient.delete()
+                                 .uri(uriBuilder -> {
+                                                        uriBuilder.path(callUrl+extUrl);
+                                                        // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
+                                                        mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
+                                                        return uriBuilder.build();
+                                                    })
+                                 .retrieve()
+                                 .bodyToMono(responseType).block();
     }
 
     private String callUrl(String api)
