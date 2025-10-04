@@ -61,6 +61,15 @@ public class BoardRest {
                             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                             .body(res);
     }
+    @RequestMapping(path="/all", method=RequestMethod.GET)
+    public ResponseEntity<List<Map<String, Object>>> getAllBoard(@RequestParam Map<String, Object> data) 
+    {
+        log.info("boardAllGetCall");
+        List<Map<String, Object>> res = gateway.getObject(data, "board", "/all", List.class);
+        return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .body(res);
+    }
 
     @RequestMapping(path="/detail/{boardId}", method=RequestMethod.GET)
     public ResponseEntity<String> getDetailBoard(@PathVariable Long boardId) 
