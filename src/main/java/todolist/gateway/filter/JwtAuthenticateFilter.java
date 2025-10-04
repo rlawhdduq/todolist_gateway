@@ -85,7 +85,7 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter{
         // 토큰 검증은 회원가입, 로그인, 토큰발급을 제외한 모든것에서 진행되어야 한다
         // log.info("토큰검증 시작");
         String token = request.getHeader("token");
-        List<String> exceptUrl = Arrays.asList("/api/v1/user/join", "/api/v1/user/login", "/api/v1/auth", "/ws");
+        List<String> exceptUrl = Arrays.asList("/api/v1/user", "/api/v1/user/login", "/api/v1/auth", "/ws");
         String requestUrl = request.getRequestURI();
 
         log.info("Acess ["+request.getRemoteHost()+"/"+request.getRemoteAddr()+":"+request.getRemotePort()+"] ");
