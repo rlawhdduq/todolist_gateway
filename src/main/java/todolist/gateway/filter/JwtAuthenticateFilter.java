@@ -90,6 +90,7 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter{
 
         log.info("Acess ["+request.getRemoteHost()+"/"+request.getRemoteAddr()+":"+request.getRemotePort()+"] ");
         log.info("callUrl : "+requestUrl);
+        log.info("token :"+token);
 
         boolean isVerificationExcepted = exceptUrl.stream().anyMatch(pattern -> requestUrl.startsWith(pattern));
         if( !isVerificationExcepted )
