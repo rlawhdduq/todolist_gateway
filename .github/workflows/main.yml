@@ -45,5 +45,5 @@ jobs:
                   cd /spring/docker/compose
                   docker-compose -f docker-compose-gateway.yaml down -v
                   docker-compose -f docker-compose-gateway.yaml build --no-cache
-                  docker-compose -f docker-compose-gateway.yaml up -d
+                  docker-compose -f docker-compose-gateway.yaml up -d --force-recreate
                   echo "CD end"
