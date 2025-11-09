@@ -46,7 +46,7 @@ public class GatewayServiceImpl implements GatewayService{
     {
         String callUrl = callUrl(api);
         return webClient.get()
-                        .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                        .uri(callUrl+extUrl, primaryKey)
                         .retrieve()
                         .bodyToMono(responseType).block();
     }
@@ -55,7 +55,7 @@ public class GatewayServiceImpl implements GatewayService{
     {
         String callUrl = callUrl(api);
         return webClient.get()
-                        .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                        .uri(callUrl+extUrl, primaryKey)
                         .retrieve()
                         .bodyToMono(responseType).block();
     }
@@ -144,7 +144,7 @@ public class GatewayServiceImpl implements GatewayService{
     {
         String callUrl = callUrl(api);
         return webClient.delete()
-                                .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                                .uri(callUrl+extUrl, primaryKey)
                                 .retrieve()
                                 .bodyToMono(responseType).block();
     }
@@ -153,7 +153,7 @@ public class GatewayServiceImpl implements GatewayService{
     {
         String callUrl = callUrl(api);
         return webClient.delete()
-                                .uri(uriBuilder -> uriBuilder.path(String.format("%s/{primary}", callUrl+extUrl)).build(primaryKey))
+                                .uri(callUrl+extUrl, primaryKey)
                                 .retrieve()
                                 .bodyToMono(responseType).block();
     }
@@ -194,12 +194,6 @@ public class GatewayServiceImpl implements GatewayService{
     private String callUrl(String api)
     {
         String callUrl = "";
-        log.info("url Check["+userUrl+"]");
-        log.info("url Check["+authUrl+"]");
-        log.info("url Check["+followUrl+"]");
-        log.info("url Check["+boardUrl+"]");
-        log.info("url Check["+messageUrl+"]");
-        log.info("url Check["+notificationUrl+"]");
         switch(api){
             case "board": 
                 callUrl = boardUrl; break;
