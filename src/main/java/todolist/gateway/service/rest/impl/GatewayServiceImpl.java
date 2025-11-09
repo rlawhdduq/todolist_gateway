@@ -3,6 +3,8 @@ package todolist.gateway.service.rest.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import todolist.gateway.api.rest.AuthinformationRest;
 import todolist.gateway.service.rest.GatewayService;
 
 @Service("RestGatewayService")
@@ -35,6 +38,8 @@ public class GatewayServiceImpl implements GatewayService{
     private String messageUrl;
     @Value("${notification.url}")
     private String notificationUrl;
+
+    private static final Logger log = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
     @Override
     public <T> T get(Long primaryKey, String api, String extUrl, Class<T> responseType)
@@ -189,6 +194,12 @@ public class GatewayServiceImpl implements GatewayService{
     private String callUrl(String api)
     {
         String callUrl = "";
+        log.info("url Check["+userUrl+"]");
+        log.info("url Check["+authUrl+"]");
+        log.info("url Check["+followUrl+"]");
+        log.info("url Check["+boardUrl+"]");
+        log.info("url Check["+messageUrl+"]");
+        log.info("url Check["+notificationUrl+"]");
         switch(api){
             case "board": 
                 callUrl = boardUrl; break;
