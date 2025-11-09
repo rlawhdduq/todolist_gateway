@@ -210,7 +210,8 @@ public class GatewayServiceImpl implements GatewayService{
             case "follow":
                 callUrl = followUrl; break;
             default:
-        }       
+        }
+        log.info("return Url["+callUrl+"]");
         return callUrl+="/rest";
     }
 }
