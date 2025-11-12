@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -46,7 +47,7 @@ public class GatewayServiceImpl implements GatewayService{
     {
         String callUrl = callUrl(api);
         return webClient.get()
-                        .uri(callUrl+extUrl, primaryKey)
+                        .uri(callUrl+extUrl+"/"+primaryKey)
                         .retrieve()
                         .bodyToMono(responseType).block();
     }
@@ -55,7 +56,7 @@ public class GatewayServiceImpl implements GatewayService{
     {
         String callUrl = callUrl(api);
         return webClient.get()
-                        .uri(callUrl+extUrl, primaryKey)
+                        .uri(callUrl+extUrl+"/"+primaryKey)
                         .retrieve()
                         .bodyToMono(responseType).block();
     }
@@ -64,15 +65,19 @@ public class GatewayServiceImpl implements GatewayService{
     public <T> T getObject(Map<String, Object> data, String api, String extUrl, Class<T> responseType)
     {
         String callUrl = callUrl(api);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(callUrl + extUrl);
+
         MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
         mData.setAll(data);
+        mData.forEach((key, val) -> {
+            if (val != null)
+            {
+                builder.queryParam(key, val.toString());
+            }
+        });
+        
         return webClient.get()
-                        .uri(uriBuilder -> {
-                                            uriBuilder.path(callUrl+extUrl);
-                                            // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
-                                            mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
-                                            return uriBuilder.build();
-                                        })
+                        .uri(builder.build().toUri())
                         .retrieve()
                         .bodyToMono(responseType).block();
     }
@@ -80,15 +85,18 @@ public class GatewayServiceImpl implements GatewayService{
     public <T> T getObject(Map<String, Object> data, String api, String extUrl, ParameterizedTypeReference<T> responseType)
     {
         String callUrl = callUrl(api);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(callUrl + extUrl);
+
         MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
         mData.setAll(data);
+        mData.forEach((key, val) -> {
+            if (val != null)
+            {
+                builder.queryParam(key, val.toString());
+            }
+        });
         return webClient.get()
-                        .uri(uriBuilder -> {
-                                            uriBuilder.path(callUrl+extUrl);
-                                            // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
-                                            mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
-                                            return uriBuilder.build();
-                                        })
+                        .uri(builder.build().toUri())
                         .retrieve()
                         .bodyToMono(responseType).block();
     }
@@ -162,15 +170,18 @@ public class GatewayServiceImpl implements GatewayService{
     public <T> T deleteObject(Map<String, Object> data, String api, String extUrl, Class<T> responseType)
     {
         String callUrl = callUrl(api);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(callUrl + extUrl);
+
         MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
         mData.setAll(data);
+        mData.forEach((key, val) -> {
+            if (val != null)
+            {
+                builder.queryParam(key, val.toString());
+            }
+        });
         return webClient.delete()
-                                 .uri(uriBuilder -> {
-                                                        uriBuilder.path(callUrl+extUrl);
-                                                        // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
-                                                        mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
-                                                        return uriBuilder.build();
-                                                    })
+                                 .uri(builder.build().toUri())
                                  .retrieve()
                                  .bodyToMono(responseType).block();
     }
@@ -178,15 +189,19 @@ public class GatewayServiceImpl implements GatewayService{
     public <T> T deleteObject(Map<String, Object> data, String api, String extUrl, ParameterizedTypeReference<T> responseType)
     {
         String callUrl = callUrl(api);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(callUrl + extUrl);
+
         MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
         mData.setAll(data);
+        mData.forEach((key, val) -> {
+            if (val != null)
+            {
+                builder.queryParam(key, val.toString());
+            }
+        });
+
         return webClient.delete()
-                                 .uri(uriBuilder -> {
-                                                        uriBuilder.path(callUrl+extUrl);
-                                                        // queryParams는 string,string밖에 못받기 때문에 object는 map을 순회시키면서 값을 할당하도록 한다.
-                                                        mData.forEach((key, value) -> uriBuilder.queryParam(key, value)); 
-                                                        return uriBuilder.build();
-                                                    })
+                                 .uri(builder.build().toUri())
                                  .retrieve()
                                  .bodyToMono(responseType).block();
     }
