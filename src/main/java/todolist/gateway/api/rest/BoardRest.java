@@ -52,11 +52,11 @@ public class BoardRest {
     }
 
     // Board
-    @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<List<Map<String, Object>>> getBoard(@RequestParam Map<String, Object> data) 
+    @RequestMapping(path="/{userId}", method=RequestMethod.GET)
+    public ResponseEntity<List<Map<String, Object>>> getBoard(@PathVariable Long userId) 
     {
         log.info("boardGetCall");
-        List<Map<String, Object>> res = gateway.getObject(data, "board", "", List.class);
+        List<Map<String, Object>> res = gateway.get(userId, "board", "", List.class);
         return ResponseEntity.ok()
                             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                             .body(res);

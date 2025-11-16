@@ -2,6 +2,7 @@ package todolist.gateway.service.rest.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,11 +69,22 @@ public class GatewayServiceImpl implements GatewayService{
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(callUrl + extUrl);
 
         MultiValueMap<String, Object> mData = new LinkedMultiValueMap<>();
-        mData.setAll(data);
-        mData.forEach((key, val) -> {
-            if (val != null)
+        data.forEach((key, val) -> {
+            if( val != null )
             {
-                builder.queryParam(key, val.toString());
+                if( val instanceof Collection )
+                {
+                    ((Collection<?>) val).forEach(item -> {
+                        if( item != null )
+                        {
+                            builder.queryParam(key, item.toString());
+                        }
+                    });
+                }
+                else
+                {
+                    builder.queryParam(key, val.toString());
+                }
             }
         });
         
