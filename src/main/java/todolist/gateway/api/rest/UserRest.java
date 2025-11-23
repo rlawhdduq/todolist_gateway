@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import todolist.gateway.service.rest.GatewayService;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -42,9 +43,11 @@ public class UserRest {
                             .body(res);
     }
 
-    @RequestMapping(path="/{userId}", method=RequestMethod.GET)
-    public ResponseEntity<String> getUser(@PathVariable Long userId) {
-        String res = gateway.get(userId, "user", "", String.class);
+    @RequestMapping(path="/{id}", method=RequestMethod.GET)
+    public ResponseEntity<String> getUser(@PathVariable String id) {
+        Map<String, Object> data = new HashMap();
+        data.put("id", id);
+        String res = gateway.getObject(data, "user", "/info", String.class);
         return ResponseEntity.ok()
                             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                             .body(res);

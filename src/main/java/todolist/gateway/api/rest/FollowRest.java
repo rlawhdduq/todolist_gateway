@@ -3,6 +3,7 @@ package todolist.gateway.api.rest;
 import org.springframework.web.bind.annotation.RestController;
 import todolist.gateway.service.rest.GatewayService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +46,16 @@ public class FollowRest {
     @RequestMapping(method=RequestMethod.DELETE)
     public String deleteFollow(@RequestParam Map<String, Object> data) {
         String res = gateway.deleteObject(data, "follow", "", String.class);
+        return res;
+    }
+
+    @RequestMapping(path="/state", method=RequestMethod.GET)
+    public Boolean followState(@RequestParam("target") Long target_user_id, @RequestParam("source") Long source_user_id)
+    {
+        Map<String, Object> data = new HashMap();
+        data.put("target", target_user_id);
+        data.put("source", source_user_id);
+        Boolean res = gateway.getObject(data, "follow", "/state", Boolean.class);
         return res;
     }
 }
